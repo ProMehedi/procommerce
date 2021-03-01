@@ -12,7 +12,7 @@ import { toast } from 'react-toastify'
 import { auth } from '../../config/firebase'
 import { LoadingOutlined } from '@ant-design/icons'
 
-const Register = ({ history }) => {
+const Register = () => {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
 

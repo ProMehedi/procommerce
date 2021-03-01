@@ -1,11 +1,18 @@
-import { LOGGED_IN_USER } from '../constants/userConstant'
+import { USER_LOGIN, USER_LOGOUT } from '../constants/userConstant'
 
-export const userActions = (user, info) => {
+export const userLogin = (user, info) => {
   return {
-    type: LOGGED_IN_USER,
+    type: USER_LOGIN,
     payload: {
       email: user.email,
       info,
     },
+  }
+}
+
+export const userLogout = () => {
+  return {
+    type: USER_LOGOUT,
+    payload: {},
   }
 }

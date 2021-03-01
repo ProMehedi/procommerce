@@ -1,14 +1,33 @@
+import firebase from 'firebase'
 import { LinkContainer } from 'react-router-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import {
-  Container,
-  DropdownButton,
-  Nav,
-  Navbar,
-  NavDropdown,
-} from 'react-bootstrap'
-import { HomeOutlined, ShoppingOutlined } from '@ant-design/icons'
+  HomeOutlined,
+  LogoutOutlined,
+  ShoppingOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { userLogout } from '../../store/actions/userActions'
 
 const Header = () => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const user = useSelector((state) => state.user)
+  const { email } = user
+
+  const handleLogout = () => {
+    // Logout From Firebase
+    firebase.auth().signOut()
+
+    // Dispatch From Store
+    dispatch(userLogout())
+
+    // Redirect After Login
+    history.push('/')
+  }
+
   return (
     <>
       <Navbar bg='white' expand='md'>
@@ -33,20 +52,30 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
             </Nav>
-            <Nav>
-              <DropdownButton
-                title='My Account'
-                id='adminMenu'
-                menuAlign='right'
-              >
-                <LinkContainer to='/login'>
-                  <NavDropdown.Item>Login</NavDropdown.Item>
+            {email ? (
+              <Nav>
+                <NavDropdown title='My Account' id='adminMenu' alignRight>
+                  <LinkContainer to='/login'>
+                    <NavDropdown.Item>Login</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/register'>
+                    <NavDropdown.Item>Register</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item onClick={handleLogout}>
+                    <LogoutOutlined className='mr-2' /> Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            ) : (
+              <Nav>
+                <LinkContainer to='/dashboard'>
+                  <Nav.Link>
+                    <UserOutlined />
+                    LOGIN / REGISTER
+                  </Nav.Link>
                 </LinkContainer>
-                <LinkContainer to='/register'>
-                  <NavDropdown.Item>Register</NavDropdown.Item>
-                </LinkContainer>
-              </DropdownButton>
-            </Nav>
+              </Nav>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

@@ -8,7 +8,7 @@ import RegisterComplete from './pages/auth/RegisterComplete'
 import Home from './pages/Home'
 import { auth } from './config/firebase'
 import { useEffect } from 'react'
-import { userActions } from './store/actions/userActions'
+import { userLogin } from './store/actions/userActions'
 
 function App() {
   const dispatch = useDispatch()
@@ -18,7 +18,7 @@ function App() {
       if (user) {
         const userInfo = await user.getIdTokenResult()
 
-        dispatch(userActions(user, userInfo))
+        dispatch(userLogin(user, userInfo))
       }
     })
 
