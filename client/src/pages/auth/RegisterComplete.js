@@ -9,6 +9,8 @@ import {
   Row,
 } from 'react-bootstrap'
 import { LoadingOutlined } from '@ant-design/icons'
+import { auth } from '../../config/firebase'
+import { toast } from 'react-toastify'
 
 const RegisterComplete = ({ history }) => {
   const [loading, setLoading] = useState(false)
@@ -21,10 +23,41 @@ const RegisterComplete = ({ history }) => {
     setEmail(registeredEmail)
   }, [registeredEmail])
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault()
     setLoading(true)
-    history.push('/')
+
+    if (!email || !password) {
+      toast.error('Email and Password is required!')
+      setLoading(false)
+      return
+    } else if (password.length < 8) {
+      toast.error('Password must be at least 8 characters long!')
+      setLoading(false)
+      return
+    }
+
+    try {
+      const result = await auth.signInWithEmailLink(email, window.location.href)
+      if (result.user.emailVerified) {
+        // Remove User Email from localStorage
+        window.localStorage.removeItem('registerEmail')
+
+        // Get User Id Token
+        let user = auth.currentUser
+        await user.updatePassword(password)
+        const idTokenResult = await user.getIdTokenResult()
+
+        // Save to Redux Store
+        console.log(idTokenResult)
+
+        // Redirect After Successfully Login
+      } else {
+        toast.error(`Sorry, your ${email} is not verified!`)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
     setLoading(false)
   }
 
