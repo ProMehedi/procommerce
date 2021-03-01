@@ -28,6 +28,7 @@ const Login = () => {
                   <FormControl
                     type='email'
                     placeholder='Type Your Email Address . . .'
+                    autoFocus
                   />
                 </Form.Group>
                 <Form.Group>
@@ -42,7 +43,7 @@ const Login = () => {
                   variant='danger'
                   className='btn-outline-danger'
                 >
-                  Login
+                  SUBMIT
                 </Button>
               </Form>
             </Card.Body>
