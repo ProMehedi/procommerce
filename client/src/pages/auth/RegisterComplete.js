@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Card,
@@ -8,40 +8,23 @@ import {
   FormControl,
   Row,
 } from 'react-bootstrap'
-import { toast } from 'react-toastify'
-import { auth } from '../../config/firebase'
 import { LoadingOutlined } from '@ant-design/icons'
 
-const Register = () => {
+const RegisterComplete = ({ history }) => {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const submitHandler = async (e) => {
+  const registeredEmail = window.localStorage.getItem('registerEmail') || ''
+
+  useEffect(() => {
+    setEmail(registeredEmail)
+  }, [registeredEmail])
+
+  const submitHandler = (e) => {
     e.preventDefault()
-
-    // Start Loading
     setLoading(true)
-
-    const config = {
-      url: `${process.env.REACT_APP_URL}/register/complete`,
-      handleCodeInApp: true,
-    }
-
-    // Send Confirmation Email
-    await auth.sendSignInLinkToEmail(email, config)
-
-    // Toastify Notification
-    toast.success(
-      `Email send to ${email}. Click the link the complete registration`
-    )
-
-    // Save Email to localStorage
-    window.localStorage.setItem('registerEmail', email)
-
-    // Clear the email form
-    setEmail('')
-
-    // Stop Loading
+    history.push('/')
     setLoading(false)
   }
 
@@ -51,18 +34,31 @@ const Register = () => {
         <Col lg='6' md='7'>
           <Card className='rounded'>
             <Card.Body>
-              <h3 className='border-bottom pb-2 mb-4 text-danger'>Register</h3>
+              <h3 className='border-bottom pb-2 mb-4 text-danger'>
+                Compelte Registration
+              </h3>
               <Form className='mb-0' onSubmit={submitHandler}>
                 <Form.Group>
                   <Form.Label htmlFor='email'>Email Address</Form.Label>
                   <FormControl
                     id='email'
                     type='email'
-                    placeholder='Type Your Email Address . . .'
                     autoFocus
                     required
+                    disabled
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label htmlFor='password'>Password</Form.Label>
+                  <FormControl
+                    id='password'
+                    type='password'
+                    placeholder='Type Your Password . . .'
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Group>
                 <Button
@@ -70,7 +66,7 @@ const Register = () => {
                   variant='danger'
                   className='btn-outline-danger'
                 >
-                  SUBMIT {loading && <LoadingOutlined />}
+                  COMPLETE REGISTRATION {loading && <LoadingOutlined />}
                 </Button>
               </Form>
             </Card.Body>
@@ -81,4 +77,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default RegisterComplete
