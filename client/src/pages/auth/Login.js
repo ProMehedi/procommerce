@@ -27,7 +27,7 @@ const Login = () => {
               <h3 className='border-bottom pb-2 mb-4 text-danger'>Login</h3>
               <Form className='mb-0' onSubmit={submitHandler}>
                 <Form.Group>
-                  <Form.Label for='email'>Email Address</Form.Label>
+                  <Form.Label htmlFor='email'>Email Address</Form.Label>
                   <FormControl
                     id='email'
                     type='email'
@@ -39,7 +39,7 @@ const Login = () => {
                   />
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label for='password'>Password</Form.Label>
+                  <Form.Label htmlFor='password'>Password</Form.Label>
                   <FormControl
                     id='password'
                     type='password'

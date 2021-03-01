@@ -1,17 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { Provider } from 'react-redux'
 import 'bootstrap-material-design/dist/css/bootstrap-material-design.min.css'
 import 'react-toastify/dist/ReactToastify.css'
 // import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { store } from './store/store'
 
 ReactDOM.render(
-  <Router>
-    <App />
-  </Router>,
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>,
   document.getElementById('root')
 )
 

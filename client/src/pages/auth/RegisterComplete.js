@@ -19,6 +19,10 @@ const RegisterComplete = ({ history }) => {
 
   const registeredEmail = window.localStorage.getItem('registerEmail') || ''
 
+  if (!registeredEmail) {
+    history.push('/register')
+  }
+
   useEffect(() => {
     setEmail(registeredEmail)
   }, [registeredEmail])

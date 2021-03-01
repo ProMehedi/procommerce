@@ -1,8 +1,10 @@
+import { LOGGED_IN_USER } from '../constants/userConstant'
+
 export const userReducers = (state = {}, action) => {
   switch (action.type) {
-    case '1':
+    case LOGGED_IN_USER:
       return action.payload
-    case '2':
+    case 'LOGOUT':
       return action.payload
     default:
       return state

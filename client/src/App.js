@@ -1,16 +1,31 @@
 import { Route, Switch } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import { Provider } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Header from './components/nav/Header'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import RegisterComplete from './pages/auth/RegisterComplete'
 import Home from './pages/Home'
-import { store } from './store/store'
+import { auth } from './config/firebase'
+import { useEffect } from 'react'
+import { userActions } from './store/actions/userActions'
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const unSubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const userInfo = await user.getIdTokenResult()
+
+        dispatch(userActions(user, userInfo))
+      }
+    })
+
+    return () => unSubscribe()
+  }, [dispatch])
   return (
-    <Provider store={store}>
+    <>
       <Header />
       <ToastContainer />
       <Switch>
@@ -19,7 +34,7 @@ function App() {
         <Route exact path='/register' component={Register} />
         <Route exact path='/register/complete' component={RegisterComplete} />
       </Switch>
-    </Provider>
+    </>
   )
 }
 
