@@ -27,8 +27,9 @@ const Login = () => {
               <h3 className='border-bottom pb-2 mb-4 text-danger'>Login</h3>
               <Form className='mb-0' onSubmit={submitHandler}>
                 <Form.Group>
-                  <Form.Label>Email Address</Form.Label>
+                  <Form.Label for='email'>Email Address</Form.Label>
                   <FormControl
+                    id='email'
                     type='email'
                     placeholder='Type Your Email Address . . .'
                     autoFocus
@@ -38,8 +39,9 @@ const Login = () => {
                   />
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label for='password'>Password</Form.Label>
                   <FormControl
+                    id='password'
                     type='password'
                     placeholder='Type Your Password . . .'
                     required

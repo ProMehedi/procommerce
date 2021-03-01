@@ -8,18 +8,22 @@ import {
   FormControl,
   Row,
 } from 'react-bootstrap'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { auth } from '../../config/firebase'
-import 'react-toastify/dist/ReactToastify.css'
+import { LoadingOutlined } from '@ant-design/icons'
 
 const Register = () => {
+  const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
 
   const submitHandler = async (e) => {
     e.preventDefault()
 
+    // Start Loading
+    setLoading(true)
+
     const config = {
-      url: 'http://localhost:3000/register/complete',
+      url: `${process.env.REACT_APP_URL}/register/complete`,
       handleCodeInApp: true,
     }
 
@@ -36,6 +40,9 @@ const Register = () => {
 
     // Clear the email form
     setEmail('')
+
+    // Stop Loading
+    setLoading(false)
   }
 
   return (
@@ -47,8 +54,9 @@ const Register = () => {
               <h3 className='border-bottom pb-2 mb-4 text-danger'>Register</h3>
               <Form className='mb-0' onSubmit={submitHandler}>
                 <Form.Group>
-                  <Form.Label>Email Address</Form.Label>
+                  <Form.Label for='email'>Email Address</Form.Label>
                   <FormControl
+                    id='email'
                     type='email'
                     placeholder='Type Your Email Address . . .'
                     autoFocus
@@ -56,14 +64,13 @@ const Register = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  <ToastContainer />
                 </Form.Group>
                 <Button
                   type='submit'
                   variant='danger'
                   className='btn-outline-danger'
                 >
-                  SUBMIT
+                  SUBMIT {loading && <LoadingOutlined />}
                 </Button>
               </Form>
             </Card.Body>
