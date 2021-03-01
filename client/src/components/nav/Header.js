@@ -1,49 +1,44 @@
-import React, { useState } from 'react'
-import { Menu } from 'antd'
-import { AppstoreOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
-
-const { SubMenu, Item } = Menu
+import { LinkContainer } from 'react-router-bootstrap'
+import { DropdownButton, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+import { HomeOutlined, ShoppingOutlined } from '@ant-design/icons'
 
 const Header = () => {
-  const [current, setCurrent] = useState('mail')
-
-  const handleClick = (e) => {
-    console.log('click ', e)
-    setCurrent(e.key)
-  }
-
   return (
-    <nav className='bg-white border-bottom'>
-      <div className='container'>
-        <Menu
-          onClick={handleClick}
-          selectedKeys={[current]}
-          mode='horizontal'
-          className='border-0'
-        >
-          <Item key='home' icon={<HomeOutlined />}>
-            <Link to='/'>Home</Link>
-          </Item>
-          <Item key='shop' icon={<AppstoreOutlined />}>
-            <Link to='/shop'>Shop</Link>
-          </Item>
-          <SubMenu
-            key='account'
-            icon={<UserOutlined />}
-            title='My Account'
-            className='float-right'
-          >
-            <Item key='login'>
-              <Link to='/login'>Login</Link>
-            </Item>
-            <Item key='register'>
-              <Link to='/register'>Register</Link>
-            </Item>
-          </SubMenu>
-        </Menu>
-      </div>
-    </nav>
+    <>
+      <Navbar bg='white' expand='md'>
+        <LinkContainer to='/'>
+          <Navbar.Brand className='font-weight-bold'>
+            <span className='text-danger'>PRO</span>COMMERCE
+          </Navbar.Brand>
+        </LinkContainer>
+        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+        <Navbar.Collapse id='basic-navbar-nav'>
+          <Nav className='mr-auto'>
+            <LinkContainer to='/'>
+              <Nav.Link>
+                <HomeOutlined /> Home
+              </Nav.Link>
+            </LinkContainer>
+            <LinkContainer to='/shop'>
+              <Nav.Link>
+                <ShoppingOutlined />
+                Shop
+              </Nav.Link>
+            </LinkContainer>
+          </Nav>
+          <Nav>
+            <DropdownButton title='My Account' id='adminMenu' menuAlign='right'>
+              <LinkContainer to='/login'>
+                <NavDropdown.Item>Login</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to='/register'>
+                <NavDropdown.Item>Register</NavDropdown.Item>
+              </LinkContainer>
+            </DropdownButton>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </>
   )
 }
 
