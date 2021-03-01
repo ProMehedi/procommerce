@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Card,
@@ -10,6 +10,9 @@ import {
 } from 'react-bootstrap'
 
 const Login = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
   const submitHandler = (e) => {
     e.preventDefault()
     console.log('Logged!')
@@ -22,13 +25,16 @@ const Login = () => {
           <Card className='rounded'>
             <Card.Body>
               <h3 className='border-bottom pb-2 mb-4 text-danger'>Login</h3>
-              <Form onSubmit={submitHandler}>
+              <Form className='mb-0' onSubmit={submitHandler}>
                 <Form.Group>
                   <Form.Label>Email Address</Form.Label>
                   <FormControl
                     type='email'
                     placeholder='Type Your Email Address . . .'
                     autoFocus
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Form.Group>
                 <Form.Group>
@@ -36,6 +42,9 @@ const Login = () => {
                   <FormControl
                     type='password'
                     placeholder='Type Your Password . . .'
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Group>
                 <Button

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Card,
@@ -8,11 +8,34 @@ import {
   FormControl,
   Row,
 } from 'react-bootstrap'
+import { toast, ToastContainer } from 'react-toastify'
+import { auth } from '../../config/firebase'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Register = () => {
-  const submitHandler = (e) => {
+  const [email, setEmail] = useState('')
+
+  const submitHandler = async (e) => {
     e.preventDefault()
-    console.log('Logged!')
+
+    const config = {
+      url: 'http://localhost:3000/register/complete',
+      handleCodeInApp: true,
+    }
+
+    // Send Confirmation Email
+    await auth.sendSignInLinkToEmail(email, config)
+
+    // Toastify Notification
+    toast.success(
+      `Email send to ${email}. Click the link the complete registration`
+    )
+
+    // Save Email to localStorage
+    window.localStorage.setItem('registerEmail', email)
+
+    // Clear the email form
+    setEmail('')
   }
 
   return (
@@ -22,14 +45,18 @@ const Register = () => {
           <Card className='rounded'>
             <Card.Body>
               <h3 className='border-bottom pb-2 mb-4 text-danger'>Register</h3>
-              <Form onSubmit={submitHandler}>
+              <Form className='mb-0' onSubmit={submitHandler}>
                 <Form.Group>
                   <Form.Label>Email Address</Form.Label>
                   <FormControl
                     type='email'
                     placeholder='Type Your Email Address . . .'
                     autoFocus
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
+                  <ToastContainer />
                 </Form.Group>
                 <Button
                   type='submit'
