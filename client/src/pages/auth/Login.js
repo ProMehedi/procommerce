@@ -8,14 +8,37 @@ import {
   FormControl,
   Row,
 } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import { auth } from '../../config/firebase'
+import { USER_LOGIN_SUCCESS } from '../../store/constants/userConstant'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const dispatch = useDispatch()
+
   const submitHandler = (e) => {
     e.preventDefault()
-    console.log('Logged!')
+
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        var user = userCredential.user
+
+        const idTokenResult = user.getIdTokenResult()
+        dispatch({
+          type: USER_LOGIN_SUCCESS,
+          payload: {
+            email: user.email,
+            token: idTokenResult,
+          },
+        })
+      })
+      .catch((error) => {
+        toast.error(error.message)
+      })
   }
 
   return (
